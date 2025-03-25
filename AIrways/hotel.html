@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Explorer</title>
+    <link rel="stylesheet" href="hotel.css">
+</head>
+<body>
+
+    <header>
+        <h1>Explore Top Hotels</h1>
+    </header>
+
+    <!-- Header Section -->
+<header>
+    <div class="logo">AIrways</div>
+    <nav>
+        <ul>
+            <li><a href="dashboard.html">Home</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Search Bar with Dropdown -->
+<div class="search-container">
+    <select id="search-category">
+        <option value="title">Hotel Name</option>
+        <option value="location">Location</option>
+        <option value="price">Price Range</option>
+    </select>
+    <input type="text" id="search-bar" placeholder="Search hotels..." onkeyup="filterCards()">
+</div>
+    
+    <!-- Card Container -->
+    <div id="card-container" class="card-content-container"></div>
+
+    <!-- Explore More Button (Centered) -->
+    <button id="explore-btn" class="explore-btn" onclick="loadMore()">Explore More</button>
+    <footer class="footer"></p>
+      <div style="margin-bottom: 20px;">
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">About</a>
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">Privacy</a>
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">Terms</a>
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">Join user studies</a>
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">Feedback</a>
+          <a href="#" style="margin: 0 10px; color: #007bff; text-decoration: none;">Help Center</a>
+      </div></footer>
+
+    <script src="hotel.js"></script>
+</body>
+</html>

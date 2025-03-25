@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("login.jpg");
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 350px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: #fff;
+        }
+
+        .login-box h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #26415E;
+        }
+
+        .login-box p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            color: #26415E;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: rgba(32, 30, 30, 0.7);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: 5px;
+            font-size: 12px;
+            color: #26415E;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background:#26415E;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #e6b800;
+        }
+
+        .signup-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #26415E;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #e6b800;
+        }
+
+        .social-login {
+            margin-top: 20px;
+        }
+
+        .social-login button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .google {
+            background: #94888e;
+            color: white;
+        }
+
+        .facebook {
+            background: #4267B2;
+            color: white;
+        }
+
+        .google:hover {
+            background: #96617b;
+        }
+
+        .facebook:hover {
+            background: #133678;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        .airplane {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            font-size: 50px;
+            transition: top 1s ease-in-out;
+        }
+
+        .airplane.fly {
+            top: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .btn, .social-login button {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .input-group input {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .input-group label {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h2>Welcome Back</h2>
+            <p>Sign in to explore the skies</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" id="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" required>
+                    <label for="password">Password</label>
+                </div>
+                <button type="submit" class="btn"><a href="dashboard.html"></a>Login</button>
+                <p class="signup-link">Don't have an account? <a href="#">Sign Up</a></p>
+            </form>
+            <div class="social-login">
+                <button class="google">Sign in with Google</button>
+                <button class="facebook">Sign in with Facebook</button>
+            </div>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+    </div>
+    <div class="airplane">✈️</div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.style.background = 'linear-gradient(135deg, #000000, #1a1a2e)';
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #1e1e2e, #3a3a6e)';
+            }
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.querySelector(".airplane").classList.add("fly");
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1200);
+        });
+    </script>
+</body>
+</html>

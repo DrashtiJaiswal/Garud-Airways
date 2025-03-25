@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Rewards</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f8ff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            background: #fff;
+            width: 250px;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .profile-sidebar h2 {
+            color: #007BFF;
+        }
+
+        .profile-picture img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: gray;
+            margin-bottom: 20px;
+        }
+
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .profile-menu li {
+            margin: 10px 0;
+        }
+
+        .profile-menu a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .profile-menu a:hover {
+            background: #f0f8ff;
+        }
+
+        .dropdown-content {
+            display: none;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            z-index: 2;
+        }
+
+        .profile-menu li:hover .dropdown-content {
+            display: block;
+        }
+
+        .edit-profile, .logout {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        .logout {
+            background: #ff4d4d;
+        }
+
+        /* Spin the Wheel */
+        .spin-container {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin-left: 20px;
+        }
+
+        .wheel {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff9999 0% 16.6%, 
+                #ffcc66 16.6% 33.2%, 
+                #66ccff 33.2% 49.8%, 
+                #99ff99 49.8% 66.4%, 
+                #ff66ff 66.4% 83%, 
+                #ff9966 83% 100%
+            );
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .wheel-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(0deg);
+            transition: transform 3s ease-out;
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 0%;
+            text-align: center;
+            line-height: 1.5;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .wheel-segment:nth-child(1) { transform: rotate(0deg) translate(-100%, -100%); }
+        .wheel-segment:nth-child(2) { transform: rotate(60deg) translate(-100%, -100%); }
+        .wheel-segment:nth-child(3) { transform: rotate(120deg) translate(-100%, -100%); }
+        .wheel-segment:nth-child(4) { transform: rotate(180deg) translate(-100%, -100%); }
+        .wheel-segment:nth-child(5) { transform: rotate(240deg) translate(-100%, -100%); }
+        .wheel-segment:nth-child(6) { transform: rotate(300deg) translate(-100%, -100%); }
+
+        #spin-btn, #show-ticket-btn, #download-ticket-btn {
+            background: #007BFF;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #spin-result, #ticket-result {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .trip-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .trip-history-table th, .trip-history-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .trip-history-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .ticket-container {
+            display: none;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .spin-container {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar">
+            <h2>My Profile</h2>
+            <div class="profile-picture">
+                <img src="profile.jpg" alt="User">
+            </div>
+            <p class="user-name">John Doe</p>
+            <p class="user-email">johndoe@example.com</p>
+            <button class="edit-profile">Edit Profile</button>
+
+            <ul class="profile-menu">
+                <li>
+                    <a href="#">Trip History</a>
+                    <div class="dropdown-content">
+                        <table class="trip-history-table" id="trip-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Destination</th>
+                                    <th>Flight Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Trip history entries will be added here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Wishlist</a>
+                    <div class="dropdown-content">
+                        <p>Wishlist Item 1</p>
+                        <p>Wishlist Item 2</p>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Travel Preferences</a>
+                    <div class="dropdown-content">
+                        <p>Preference 1</p>
+                        <p>Preference 2</p>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Payment Methods</a>
+                    <div class="dropdown-content">
+                        <p>Credit Card</p>
+                        <p>PayPal</p>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Loyalty Programs</a>
+                    <div class="dropdown-content">
+                        <p>Program 1</p>
+                        <p>Program 2</p>
+                    </div>
+                </li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Security Settings</a></li>
+            </ul>
+
+            <button class="logout">Logout</button>
+        </div>
+
+        <!-- Spin the Wheel Section -->
+        <div class="spin-container">
+            <h2>🎉 Spin & Win!</h2>
+            <div class="wheel">
+                <div class="wheel-inner">
+                    <div class="wheel-segment">10% Off</div>
+                    <div class="wheel-segment">₹500 Cashback</div>
+                    <div class="wheel-segment">Extra Miles</div>
+                    <div class="wheel-segment">Lucky Draw Entry</div>
+                    <div class="wheel-segment">Airport Lounge Access</div>
+                    <div class="wheel-segment">Surprise Gift</div>
+                </div>
+            </div>
+            <button id="spin-btn">Spin Now</button>
+            <p id="spin-result"></p>
+            <button id="show-ticket-btn">Show Ticket</button>
+            <button id="download-ticket-btn">Download Ticket</button>
+            <div id="ticket-result" class="ticket-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("spin-btn").addEventListener("click", function() {
+            let wheel = document.querySelector(".wheel-inner");
+            let resultText = document.getElementById("spin-result");
+
+            // Generate a random spin degree
+            let randomDegree = Math.floor(5000 + Math.random() * 5000);
+            wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+            // Delay result after spin animation
+            setTimeout(() => {
+                let options = [
+                    "10% Off",
+                    "₹500 Cashback",
+                    "Extra Miles",
+                    "Lucky Draw Entry",
+                    "Airport Lounge Access",
+                    "Surprise Gift"
+                ];
+                let selectedIndex = Math.floor(Math.random() * options.length);
+                resultText.innerHTML = `🎉 You won: <b>${options[selectedIndex]}</b>`;
+            }, 3000);
+        });
+
+        // JavaScript to dynamically add trip history entries
+        const tripHistoryTable = document.getElementById('trip-history-table').getElementsByTagName('tbody')[0];
+
+        const tripHistoryData = [
+            { date: '2025-03-01', destination: 'New York', flightNumber: 'AA123', status: 'Completed' },
+            { date: '2025-02-15', destination: 'London', flightNumber: 'BA456', status: 'Completed' },
+            { date: '2025-01-20', destination: 'Tokyo', flightNumber: 'JL789', status: 'Cancelled' }
+        ];
+
+        tripHistoryData.forEach(trip => {
+            let row = tripHistoryTable.insertRow();
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            let cell4 = row.insertCell(3);
+            cell1.innerHTML = trip.date;
+            cell2.innerHTML = trip.destination;
+            cell3.innerHTML = trip.flightNumber;
+            cell4.innerHTML = trip.status;
+        });
+
+        // JavaScript to show ticket
+        document.getElementById("show-ticket-btn").addEventListener("click", function() {
+            const ticketContainer = document.getElementById("ticket-result");
+            ticketContainer.style.display = "block";
+            ticketContainer.innerHTML = `
+                <h3>Booking Ticket</h3>
+                <p><strong>Name:</strong> John Doe</p>
+                <p><strong>Flight Number:</strong> AA123</p>
+                <p><strong>From:</strong> New York</p>
+                <p><strong>To:</strong> Tokyo</p>
+                <p><strong>Date:</strong> 2025-03-01</p>
+                <p><strong>Class:</strong> Economy</p>
+                <p><strong>Hotel:</strong> Tokyo Grand Hotel</p>
+                <p><strong>Travel Mode:</strong> Flight</p>
+                <p><strong>Discount:</strong> ${document.getElementById("spin-result").innerText}</p>
+            `;
+        });
+
+        // JavaScript to download ticket
+        document.getElementById("download-ticket-btn").addEventListener("click", function() {
+            const ticketContainer = document.getElementById("ticket-result");
+            const ticketContent = ticketContainer.innerHTML;
+            const blob = new Blob([ticketContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ticket.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+
+</body>
+</html>
